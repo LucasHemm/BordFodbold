@@ -1,0 +1,7 @@
+Team-1, versus, Team-2, Date, Time, Result
+w, 2, -3, versus, t, 0, 3, 2, 3, w: Won the match
+w, 0, -3, versus, w, 2, 3, 2, 2, w: Won the match
+y, 0, -5, versus, h, 2, 5, 4, 4, h: Won the match
+o, 0, 0, versus, q, 0, 0, 1, 1, TBC
+y, 0, -5, versus, o, 0, 0, 2, 3, TBC
+w, 0, -3, versus, w, 0, -3, 2, 6, TBC

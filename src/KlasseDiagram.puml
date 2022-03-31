@@ -1,0 +1,64 @@
+@startuml
+class Main
+class TextUI
+class FileIO
+class Team
+class Match
+class Tournament
+interface IFileIO
+object dataBase
+
+Main : +main static void(String[] args)
+
+
+IFileIO : + void loadFile()
+IFileIO : + void saveTournamentData()
+
+FileIO : + void loadFile()
+FileIO : + void saveTournamentData()
+
+dataBase : + void loadFile()
+dataBase : + void saveTournamentData()
+
+TextUI : + void displayMessage()
+TextUI : + String getUserInput()
+
+
+Team : -String name
+Team : -int numberOfPlayers
+Team : -int numberOfPoints
+Team : -int goalDifference
+Team : +void getNumberOfPlayers()
+Team : +void registerTeam(String name, int numberOfPlayers)
+Team : +String getName()
+Team : +void updateNumberOfPoints()
+Team : +int getNumberOfPoints()
+Team : +void updateGoalDifference()
+Team : +int getGoalDifference()
+
+
+Match : -Arraylist<Team> teams
+Match : +void createMatch(Team team1, Team team2, String date, String time)
+Match : +Arraylist<Team> getTeams()
+
+Tournament : -Arraylist<Match> matches
+Tournament : -Arraylist<String> results
+Tournament : +void displayMenu(String input)
+Tournament : + void registerResult(int index, int numberOfGoals1, int numberOfGoals2)
+Tournament : +String getResult(int index)
+Tournament : +teamRanking()
+Tournament : +Arraylist<Match> getMatches()
+
+Main *--Tournament
+
+IFileIO <|-- FileIO
+IFileIO <|-- dataBase
+
+Tournament *-- IFileIO
+Tournament *--TextUI
+Tournament *--Match
+
+Match *-- Team
+
+
+@enduml
