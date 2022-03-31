@@ -51,9 +51,17 @@ public class Team {
     public String getTeamPlayerNames(){
         String names = "";
         for(Player c : teamPlayers){
-            names = c.getName();
+            names += c.getName();
         }
         return names;
+    }
+
+    public void setPlayerNames(){
+
+        for(Player p: teamPlayers){
+
+        }
+
     }
 
     @Override

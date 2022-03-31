@@ -30,9 +30,11 @@ public class Tournament {
                 }
                 fileIo.saveTeamData(teams);
                 fileIo.saveGameData(matches);
-                //evt menuchoice++ ***************************
+
             case 1:
                // fileIo.loadTeams & fileIo.loadMatches *************
+
+
                 boolean check = true;
                 while(check){
                     String[] options = {"Register results", "Create semi-finals", "Create final", "View ranking",
@@ -91,7 +93,9 @@ public class Tournament {
                         case 5:
                             System.out.println("List of teams in the tournament");
                             for(Team t: teams){
-                                System.out.println(t.getTeamName()+"\n");
+
+                                System.out.println(t.getTeamName()+ ", Player names: " + t.getTeamPlayerNames()+ "\n");
+
                             }
                             System.out.println("Press enter to continue");
                             textUI.get();
