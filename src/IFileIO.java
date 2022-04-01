@@ -9,4 +9,5 @@ public interface IFileIO {
     ArrayList<String> loadPlayerData();
     ArrayList<String> loadGameData();
     void clear();
+    void fill();
 }
