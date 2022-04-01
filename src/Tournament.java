@@ -92,7 +92,6 @@ public class Tournament {
                     textUI.clear();
                     break;
                 case 4:
-                    System.out.println("matches" + matches);
                     showMatchProgram();
 
                     System.out.println("Press enter to continue");
