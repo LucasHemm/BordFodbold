@@ -22,6 +22,13 @@ public class Match {
         this.team1 = team1;
         this.team2 = team2;
     }
+    public Match(Team team1, Team team2,String date, String time, String result){
+        this.date = date;
+        this.time = time;
+        this.team1 = team1;
+        this.team2 = team2;
+        this.result = result;
+    }
 
     public void createTeams() {
         System.out.println("Enter team 1 name then enter number of players: ");

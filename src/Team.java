@@ -22,6 +22,21 @@ public class Team {
             teamPlayers.add(p);
         }
     }
+    //Name, Number of players, Points, Goal difference
+    public Team(String teamName, int numberOfPlayers, int numberOfPoints, int goalDifference){
+        this.teamName = teamName;
+        this.numberOfPlayers = numberOfPlayers;
+        this.numberOfPoints = numberOfPoints;
+        this.goalDifference = goalDifference;
+
+
+
+    }
+    public void createPlayer(String name){
+        Player player = new Player(name);
+        this.teamPlayers.add(player);
+
+    }
 
     public int getNumberOfPlayers(){
         return numberOfPlayers;
@@ -51,7 +66,7 @@ public class Team {
     public String getTeamPlayerNames(){
         String names = "";
         for(Player c : teamPlayers){
-            names += c.getName();
+            names += c.getName() + ", ";
         }
         return names;
     }

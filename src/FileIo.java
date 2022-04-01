@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class FileIo{
+public class FileIo implements IFileIO{
 
     public void saveTeamData(ArrayList<Team> data ){
         StringBuilder gameData = new StringBuilder("Name, Number of players, Points, Goal difference\n");
@@ -44,9 +44,9 @@ public class FileIo{
     }
 
     public void savePlayerData(ArrayList<Team> teams){
-        StringBuilder gameData = new StringBuilder("Team name, Player Names");
+        StringBuilder gameData = new StringBuilder("Player Names\n");
         for(Team t: teams){
-                gameData.append(t.getTeamName() + ", " + t.getTeamPlayerNames()+"\n");
+                gameData.append(t.getTeamPlayerNames()+ "\n");
             }
 
             try {
@@ -60,7 +60,25 @@ public class FileIo{
             }
     }
 
+    public ArrayList<String> loadGameData(){
 
+        File file = new File("src/gameData.csv");
+        ArrayList<String> data = new ArrayList<>();
+
+        try {
+            Scanner scan = new Scanner(file);
+            String header = scan.nextLine();//Ignorer header
+
+            while (scan.hasNextLine()) {
+                data.add(scan.nextLine());
+
+            }
+        } catch (FileNotFoundException e) {
+            data = null;
+        }
+        return data;
+
+    }
 
 
     public String[] loadTeamData(){
@@ -80,15 +98,90 @@ public class FileIo{
             } catch (FileNotFoundException e) {
                 data = null;
             }
-            //Name, Number of players, Points, Goal difference
-            for(int j = 0; j < data.length; j++) {
-                String[] tmpData = data[j].split(",");
-                String teamName = tmpData[0];
-                int numberOfPlayer = Integer.parseInt(tmpData[1]);
-                int points = Integer.parseInt(tmpData[2]);
-                int goalDifference = Integer.parseInt(tmpData[3]);
-            }
             return data;
+    }
+    public ArrayList<String> loadPlayerData(){
+
+        File file = new File("src/playerData.csv");
+        ArrayList<String> data = new ArrayList<>();
+
+        try {
+            Scanner scan = new Scanner(file);
+            String header = scan.nextLine();//Ignorer header
+
+            while (scan.hasNextLine()) {
+                data.add(scan.nextLine());
+
+            }
+        } catch (FileNotFoundException e) {
+            data = null;
+        }
+        return data;
+    }
+
+    public void clear(){
+        String gameData = "";
+        try {
+            FileWriter output = new FileWriter("src/playerData.csv");
+            output.write(gameData);
+            output.close();
+
+        }
+        catch (IOException e) {
+            e.getStackTrace();
+        }
+        try {
+            FileWriter output = new FileWriter("src/teamData.csv");
+            output.write(gameData);
+            output.close();
+
+        }
+        catch (IOException e) {
+            e.getStackTrace();
+        }
+        try {
+            FileWriter output = new FileWriter("src/gameData.csv");
+            output.write(gameData);
+            output.close();
+
+        }
+        catch (IOException e) {
+            e.getStackTrace();
+        }
+
+
+    }
+
+    public void fill(){
+
+        String gameData = "This is a filler";
+        try {
+            FileWriter output = new FileWriter("src/playerData.csv");
+            output.write(gameData);
+            output.close();
+
+        }
+        catch (IOException e) {
+            e.getStackTrace();
+        }
+        try {
+            FileWriter output = new FileWriter("src/teamData.csv");
+            output.write(gameData);
+            output.close();
+
+        }
+        catch (IOException e) {
+            e.getStackTrace();
+        }
+        try {
+            FileWriter output = new FileWriter("src/gameData.csv");
+            output.write(gameData);
+            output.close();
+
+        }
+        catch (IOException e) {
+            e.getStackTrace();
+        }
 
 
 

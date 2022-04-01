@@ -9,43 +9,41 @@ public class Tournament {
 
     TextUI textUI = new SysTextUI();
     public ArrayList<Match> matches = new ArrayList();
-    FileIo fileIo = new FileIo();
+    IFileIO fileIo = new FileIo();
     ArrayList<Team> teams = new ArrayList<>();
-    ArrayList<String> teamNames = new ArrayList<>();
-
+    //ArrayList<String> teamNames = new ArrayList<>();
+    String [] teamNames = new String[8];
 
 
     public void run() {
 
         String[] choices = {"New tournament", "Continue tournament", "Delete tournament"};
-        int menuChoice = textUI.select("Choose an option to continue", choices, "FOOTER");
+        int menuChoice = textUI.select("Choose an option to continue", choices, "");
         switch (menuChoice) {
             case 0:
                 int counter = 1;
-               // fileIo.clear();**********************
-                for(int i = 0; i < 4; i++){
+                fileIo.clear();
+                for (int i = 0; i < 4; i++) {
                     System.out.println("Enter date, then enter time of match number: " + counter);
                     createMatch(textUI.get(), textUI.get());
                     counter++;
                 }
-                fileIo.saveTeamData(teams);
-                fileIo.saveGameData(matches);
 
             case 1:
-               // fileIo.loadTeams & fileIo.loadMatches *************
-
-
+                createTeams(fileIo.loadTeamData(), fileIo.loadPlayerData());
+                createMatches(fileIo.loadGameData());
+                createTeamNames();
                 boolean check = true;
-                while(check){
+                while (check) {
                     String[] options = {"Register results", "Create semi-finals", "Create final", "View ranking",
-                                        "View match program", "View teams", "Quit and save"};
-                    int optionChoice = textUI.select("Choose an option", options, "OPTION FOOTER");
+                            "View match program", "View teams", "Quit and save"};
+                    int optionChoice = textUI.select("Choose an option", options, "");
 
                     switch (optionChoice) {
                         case 0:
-                            // evt smid view match program ind
+                            showMatchProgram();
                             System.out.println("Enter which match you would like to update");
-                            Match match = matches.get(textUI.getInteger()-1);
+                            Match match = matches.get(textUI.getInteger() - 1);
                             registerResult(match);
                             System.out.println("Press enter to continue");
                             textUI.get();
@@ -53,7 +51,7 @@ public class Tournament {
                             break;
                         case 1:
                             int semiCounter = 1;
-                            for(int i = 0; i < 2; i++){
+                            for (int i = 0; i < 2; i++) {
                                 System.out.println("Enter date, then enter time of match number: " + semiCounter);
                                 createFinals();
                             }
@@ -73,6 +71,7 @@ public class Tournament {
                             Collections.sort(teams, new SortByGoals());
                             Collections.sort(teams, new SortByPoints());
                             System.out.println("\nThis is the team ranking\n");
+                            System.out.println("Team name, points, goal difference");
                             for (int i = 7; i >= 0; i--) {
                                 System.out.println(teams.get(i));
                             }
@@ -81,10 +80,8 @@ public class Tournament {
                             textUI.clear();
                             break;
                         case 4:
-                            System.out.println("Teams, date, time, and results");
-                            for(Match m: matches){
-                                System.out.println(m + "\n");
-                            }
+                            System.out.println("matches" + matches);
+                            showMatchProgram();
 
                             System.out.println("Press enter to continue");
                             textUI.get();
@@ -92,9 +89,9 @@ public class Tournament {
                             break;
                         case 5:
                             System.out.println("List of teams in the tournament");
-                            for(Team t: teams){
+                            for (Team t : teams) {
 
-                                System.out.println(t.getTeamName()+ ", Player names: " + t.getTeamPlayerNames()+ "\n");
+                                System.out.println(t.getTeamName() + ", Player names: " + t.getTeamPlayerNames() + "\n");
 
                             }
                             System.out.println("Press enter to continue");
@@ -102,8 +99,10 @@ public class Tournament {
                             textUI.clear();
                             break;
                         case 6:
+                            fileIo.clear();
                             fileIo.saveTeamData(teams);
                             fileIo.saveGameData(matches);
+                            fileIo.savePlayerData(teams);
                             System.out.println("Press enter to continue");
                             textUI.get();
                             textUI.clear();
@@ -111,30 +110,41 @@ public class Tournament {
                             System.out.println("Goodbye");
                             break;
                     }
-                    break;
-                }
 
+                }
+                break;
             case 2:
-                // fileIO.clear();**********************
+                fileIo.clear();
                 System.out.println("Tournament has been deleted");
                 break;
         }
     }
 
     private void createMatch(String date, String time){
-        Match match = new Match(date,time);
+        Match match = new Match(date, time);
         teams.add(match.team1);
         teams.add(match.team2);
 
         matches.add(match);
     }
 
-    private void createFinals(){
-        if(teamNames == null) {
-            for (Team t : teams) {
-                teamNames.add(t.getTeamName());
-            }
+    private void createTeamNames() {
+        for(int i = 0; i < 8;i++){
+
+            teamNames[i] = teams.get(i).getTeamName();
         }
+    }
+
+    private void showMatchProgram(){
+        System.out.println("Teams, date, time, and results");
+        int counter = 1;
+        for (Match m : matches) {
+            System.out.println("Match " + counter + ", " +  m + "\n");
+            counter++;
+        }
+    }
+
+    private void createFinals() {
         int semi1 = textUI.select("Choose team 1", teamNames, "");
 
         int semi2 = textUI.select("Choose team 2", teamNames, "");
@@ -144,10 +154,10 @@ public class Tournament {
         matches.add(match);
     }
 
-    private void registerResult(Match match){
-       String[] choices = {match.team1.getTeamName(), match.team2.getTeamName()};
-       int winner = textUI.select("Enter winning team", choices, "");
-        switch(winner) {
+    private void registerResult(Match match) {
+        String[] choices = {match.team1.getTeamName(), match.team2.getTeamName()};
+        int winner = textUI.select("Enter winning team", choices, "");
+        switch (winner) {
             case 0:
                 match.team1.updateNumberOfPoints(2);
                 match.result = match.team1.getTeamName() + ": Won the match";
@@ -157,9 +167,9 @@ public class Tournament {
                 match.result = match.team2.getTeamName() + ": Won the match";
                 break;
         }
-        System.out.println("Enter number of goals scored by "+ match.team1.getTeamName());
+        System.out.println("Enter number of goals scored by " + match.team1.getTeamName());
         int team1Goal = textUI.getInteger();
-        System.out.println("Enter number of goals scored by "+ match.team2.getTeamName());
+        System.out.println("Enter number of goals scored by " + match.team2.getTeamName());
         int team2Goal = textUI.getInteger();
         match.team1.updateGoalDifference(team1Goal);
         match.team1.updateGoalDifference(-team2Goal);
@@ -169,4 +179,56 @@ public class Tournament {
         System.out.println("Result has been registered");
     }
 
+    private void createTeams(String[] teamData, ArrayList<String> playerData) {
+        for (int i = 0; i < teamData.length; i++) {
+            String[] tmpData = teamData[i].split(", ");
+            String teamName = tmpData[0];
+            int numberOfPlayer = Integer.parseInt(tmpData[1]);
+            int points = Integer.parseInt(tmpData[2]);
+            int goalDifference = Integer.parseInt(tmpData[3]);
+            Team team = new Team(teamName, numberOfPlayer, points, goalDifference);
+            teams.add(team);
+
+            for (int j = 0; j < playerData.size(); j++) {
+                String[] tmpPlayerData = playerData.get(j).split(", ");
+
+                for (int k = 0; k < tmpPlayerData.length; k++) {
+                    String playerName = tmpPlayerData[k];
+                    team.createPlayer(playerName);
+                }
+            }
+        }
+    }
+
+    //Team-1, versus, Team-2, Date, Time, Result
+    public void createMatches(ArrayList<String> gameData) {
+        for (int i = 0; i < gameData.size(); i++) {
+            String[] tmpData = gameData.get(i).split(", ");
+
+            String teamName1 = tmpData[0];
+            String teamName2 = tmpData[2];
+
+
+            String date = tmpData[3];
+            String time = tmpData[4];
+            String result = tmpData[5];
+
+            Team tmpTeam1 = null;
+            Team tmpTeam2 = null;
+            for (int j = 0; j < teams.size(); j++) {
+
+                if (teamName1.equals(teams.get(j).getTeamName())) {
+                    tmpTeam1 = teams.get(j);
+                }
+                if (teamName2.equals(teams.get(j).getTeamName())) {
+                    tmpTeam2 = teams.get(j);
+                }
+            }
+            Match match = new Match(tmpTeam1, tmpTeam2, date, time, result);
+            matches.add(match);
+
+        }
+
+
+    }
 }
