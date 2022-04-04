@@ -76,14 +76,14 @@ Tournament : -Arraylist<Team> teams
 Tournament : -String[] teamNames
 Tournament : -textUI TextUI
 Tournament : -fileIo FileIO
-Tournament : +void createFinals()
-Tournament : +void createMatch(String date, String time)
-Tournament : +void createMatches(Arraylist<String>)
-Tournament : +void createTeamNames()
-Tournament : +void menu()
-Tournament : +void registerResult(Match)
-Tournament : +void showMatchProgram()
-Tournament : +void run()
+Tournament : -void createFinals()
+Tournament : -void createMatch(String date, String time)
+Tournament : -void createMatches(Arraylist<String>)
+Tournament : -void createTeamNames()
+Tournament : -void menu()
+Tournament : -void registerResult(Match)
+Tournament : -void showMatchProgram()
+Tournament : -void run()
 
 
 Player : -String name
