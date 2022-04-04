@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class FileIo implements IFileIO{
 
+
+    //Saves the name, number of players, number of point, and goal difference for each team as a line in a .csv file
     public void saveTeamData(ArrayList<Team> data ){
         StringBuilder gameData = new StringBuilder("Name, Number of players, Points, Goal difference\n");
         for(Team t: data) {
@@ -26,6 +28,8 @@ public class FileIo implements IFileIO{
         }
     }
 
+
+    //Saves the teams, the date, the time, and the result for each match as a line in a .csv file
     public void saveGameData(ArrayList<Match> data ) {
         StringBuilder gameData = new StringBuilder("Team-1, versus, Team-2, Date, Time, Result\n");
         for(Match m: data) {
@@ -43,6 +47,8 @@ public class FileIo implements IFileIO{
         }
     }
 
+
+    //Saves the names of the players for each team as a line in a .csv file
     public void savePlayerData(ArrayList<Team> teams){
         StringBuilder gameData = new StringBuilder("Player Names\n");
         for(Team t: teams){
@@ -60,6 +66,7 @@ public class FileIo implements IFileIO{
             }
     }
 
+    //Loads the data for the matches
     public ArrayList<String> loadGameData(){
 
         File file = new File("src/gameData.csv");
@@ -80,7 +87,7 @@ public class FileIo implements IFileIO{
 
     }
 
-
+    //Loads the data for the teams
     public String[] loadTeamData(){
 
             File file = new File("src/teamData.csv");
@@ -100,6 +107,9 @@ public class FileIo implements IFileIO{
             }
             return data;
     }
+
+
+    //Loads the players names
     public ArrayList<String> loadPlayerData(){
 
         File file = new File("src/playerData.csv");
@@ -119,6 +129,8 @@ public class FileIo implements IFileIO{
         return data;
     }
 
+
+    //Clears all data in all the files
     public void clear(){
         String gameData = "";
         try {
@@ -152,6 +164,7 @@ public class FileIo implements IFileIO{
 
     }
 
+    //Adds a filler header in all the files
     public void fill(){
 
         String gameData = "This is a filler";

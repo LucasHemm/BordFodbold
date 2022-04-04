@@ -7,6 +7,7 @@ import java.util.Comparator;
 
 public class Tournament {
 
+    //Fields
     TextUI textUI = new SysTextUI();
     public ArrayList<Match> matches = new ArrayList();
     IFileIO fileIo = new FileIo();
@@ -14,12 +15,16 @@ public class Tournament {
     //ArrayList<String> teamNames = new ArrayList<>();
     String [] teamNames = new String[8];
 
-
+    //Method that runs the whole tournamentt
     public void run() {
 
+        //We get user input to check if we want to create a tournament, load one, or delete it
         String[] choices = {"New tournament", "Continue tournament", "Delete tournament"};
         int menuChoice = textUI.select("Choose an option to continue", choices, "");
+
         switch (menuChoice) {
+
+            //This case creates a tournament by creating the first 4 matches and the 8 teams - then it calls the menu
             case 0:
                 int counter = 1;
                 fileIo.clear();
@@ -30,28 +35,39 @@ public class Tournament {
                 }
                 menu();
                 break;
-            case 1:
 
+            case 1:
+                //This case loads the data for the team, matches and players - then calls the menu
                 createTeams(fileIo.loadTeamData(), fileIo.loadPlayerData());
                 createMatches(fileIo.loadGameData());
                 menu();
                 break;
+
             case 2:
+                //This case clears the files and ends the program
                 fileIo.clear();
                 System.out.println("Tournament has been deleted");
                 break;
         }
     }
+
+
+    //Helper method that shows a menu and calls for user input
     private void menu(){
 
         createTeamNames();
+        //Decides whether the program keeps showing the menu or ends the program
         boolean check = true;
+
+        //Loop in which we call for a user input to do the actions: register result, view ranking, etc.
         while (check) {
             String[] options = {"Register results", "Create semi-finals", "Create final", "View ranking",
                     "View match program", "View teams", "Quit and save"};
             int optionChoice = textUI.select("Choose an option", options, "");
 
             switch (optionChoice) {
+
+                //This case can register a result for an existing match
                 case 0:
                     showMatchProgram();
                     System.out.println("Enter which match you would like to update");
@@ -61,6 +77,8 @@ public class Tournament {
                     textUI.get();
                     textUI.clear();
                     break;
+
+                //This case will create two matches and saves them
                 case 1:
                     int semiCounter = 1;
                     for (int i = 0; i < 2; i++) {
@@ -72,6 +90,8 @@ public class Tournament {
                     textUI.get();
                     textUI.clear();
                     break;
+
+                //This case will create a match and save them
                 case 2:
                     createFinals();
                     fileIo.saveGameData(matches);
@@ -79,6 +99,9 @@ public class Tournament {
                     textUI.get();
                     textUI.clear();
                     break;
+
+                //This case sorts the teams first by number of goals then number of points.
+                //This means team with the most points is ranked the highest.
                 case 3:
                     Collections.sort(teams, new SortByGoals());
                     Collections.sort(teams, new SortByPoints());
@@ -91,6 +114,8 @@ public class Tournament {
                     textUI.get();
                     textUI.clear();
                     break;
+
+                //This case shows the planned matches
                 case 4:
                     showMatchProgram();
 
@@ -98,6 +123,8 @@ public class Tournament {
                     textUI.get();
                     textUI.clear();
                     break;
+
+                //This case prints out the team names and the names for the players in each team
                 case 5:
                     System.out.println("List of teams in the tournament");
                     for (Team t : teams) {
@@ -109,6 +136,9 @@ public class Tournament {
                     textUI.get();
                     textUI.clear();
                     break;
+
+                //This case clear the exiting files, as to not save on top of old data
+                //Then it saves all the data in the files and ends the program
                 case 6:
                     fileIo.clear();
                     fileIo.saveTeamData(teams);
@@ -126,7 +156,8 @@ public class Tournament {
 
     }
 
-
+    //Helper method that creates a match and adds it in the ArrayList, matches
+    //It adds the two teams in the ArrayList, teams
     private void createMatch(String date, String time){
         Match match = new Match(date, time);
         teams.add(match.team1);
@@ -135,6 +166,7 @@ public class Tournament {
         matches.add(match);
     }
 
+    //Adds the team names in the ArrayList, teams, to the String Array, teamNames
     private void createTeamNames() {
         for(int i = 0; i < 8;i++){
 
@@ -142,6 +174,8 @@ public class Tournament {
         }
     }
 
+
+    //Shows all planned matches, with team names, date, time, and result
     private void showMatchProgram(){
         System.out.println("Teams, date, time, and results");
         int counter = 1;
@@ -151,6 +185,7 @@ public class Tournament {
         }
     }
 
+    //Creates a new match from existing teams after user input
     private void createFinals() {
         int semi1 = textUI.select("Choose team 1", teamNames, "");
 
@@ -161,6 +196,7 @@ public class Tournament {
         matches.add(match);
     }
 
+    //Gets user input to choose a match and then the admin can register the result for said match
     private void registerResult(Match match) {
         String[] choices = {match.team1.getTeamName(), match.team2.getTeamName()};
         int winner = textUI.select("Enter winning team", choices, "");
@@ -186,6 +222,7 @@ public class Tournament {
         System.out.println("Result has been registered");
     }
 
+    //Used when continuing a tournament to recreate teams and the players for each team
     private void createTeams(String[] teamData, ArrayList<String> playerData) {
         for (int i = 0; i < teamData.length; i++) { // foreach team
             String[] tmpData = teamData[i].split(", ");
@@ -209,8 +246,8 @@ public class Tournament {
         }
     }
 
-    //Team-1, versus, Team-2, Date, Time, Result
-    public void createMatches(ArrayList<String> gameData) {
+    //Used when continuing a tournament to recreate the matches already planned (and played)
+    private void createMatches(ArrayList<String> gameData) {
         for (int i = 0; i < gameData.size(); i++) {
             String[] tmpData = gameData.get(i).split(", ");
 
@@ -237,7 +274,5 @@ public class Tournament {
             matches.add(match);
 
         }
-
-
     }
 }
