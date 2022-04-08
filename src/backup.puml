@@ -1,0 +1,113 @@
+@startuml
+class Main
+class TextUI
+class FileIO
+class Team
+class Match
+class Tournament
+class Player
+class SortByGoals
+class SortByPoints
+interface IFileIO
+object dataBase
+
+Main : + public static void main(String[] args)
+
+
+IFileIO : + void clear()
+IFileIO : + void fill()
+IFileIO : + Arraylist<String> loadGameData()
+IFileIO : + Arraylist<String> loadPlayerData()
+IFileIO : + String[] loadTeamData()
+IFileIO : + void saveGameData(Arraylist<Match>)
+IFileIO : + void savePlayerData(Arraylist<Team>)
+IFileIO : + void saveTeamData(Arraylist<Team>)
+
+FileIO : + void clear()
+FileIO : + void fill()
+FileIO : + Arraylist<String> loadGameData()
+FileIO : + Arraylist<String> loadPlayerData()
+FileIO : + String[] loadTeamData()
+FileIO : + void saveGameData(Arraylist<Match>)
+FileIO : + void savePlayerData(Arraylist<Team>)
+FileIO : + void saveTeamData(Arraylist<Team>)
+
+
+dataBase : + void loadFile()
+dataBase : + void saveTournamentData()
+
+TextUI : + void displayMessage()
+TextUI : + String getUserInput()
+
+
+Team : -String name
+Team : -int numberOfPlayers
+Team : -int numberOfPoints
+Team : -int goalDifference
+Team : -String teamName
+Team : -Arraylist<Player> teamPlayers
+Team : -textUI TextUI
+Team : +void getNumberOfPlayers()
+Team : +void createPlayer()
+Team : +String getTeamName()
+Team : +String getTeamPlayerName()
+Team : +String setPlayerNames()
+Team : +void updateNumberOfPoints()
+Team : +int getNumberOfPoints()
+Team : +void updateGoalDifference()
+Team : +int getGoalDifference()
+Team : +String toString()
+
+
+Match : -Arraylist<Team> teams
+Match : -String date
+Match : -String result
+Match : -Team team1
+Match : -Team team2
+Match : -TextUI textUI
+Match : -String time
+Match : +void createTeams()
+Match : +String getDateAndTime()
+Match : +String toString()
+
+
+Tournament : -Arraylist<Match> matches
+Tournament : -Arraylist<Team> teams
+Tournament : -String[] teamNames
+Tournament : -textUI TextUI
+Tournament : -fileIo FileIO
+Tournament : +void createFinals()
+Tournament : +void createMatch(String date, String time)
+Tournament : +void createMatches(Arraylist<String>)
+Tournament : +void createTeamNames()
+Tournament : +void menu()
+Tournament : +void registerResult(Match)
+Tournament : +void showMatchProgram()
+Tournament : +void run()
+
+
+Player : -String name
+Player : +String getName()
+
+SortByGoals : +int compare(Team, Team)
+
+SortByPoints : +int compare(Team, Team)
+
+Main *-- Tournament
+
+IFileIO <|-- FileIO
+IFileIO <|-- dataBase
+
+Tournament *-- IFileIO
+Tournament *--TextUI
+Tournament "1" *-- "7" Match
+Tournament "1" *-- "8" Team
+
+Match "1" *-- "2" Team
+
+Team "1" *-- "2..5" Player
+
+SortByGoals *-- Tournament
+
+SortByPoints *-- Tournament
+@enduml
