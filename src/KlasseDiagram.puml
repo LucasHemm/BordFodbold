@@ -11,7 +11,7 @@ class SortByPoints
 interface IFileIO
 object dataBase
 
-Main : +main static void(String[] args)
+Main : + public static void main(String[] args)
 
 
 IFileIO : + void clear()
@@ -107,7 +107,7 @@ Match "1" *-- "2" Team
 
 Team "1" *-- "2..5" Player
 
-SortByGoals *-- Tournament
+Tournament *-- SortByGoals
 
-SortByPoints *-- Tournament
+Tournament *-- SortByPoints
 @enduml
