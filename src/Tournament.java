@@ -10,7 +10,7 @@ public class Tournament {
     //Fields
     TextUI textUI = new SysTextUI();
     public ArrayList<Match> matches = new ArrayList();
-    IFileIO fileIo = new FileIo();
+    IFileIO fileIo;
     ArrayList<Team> teams = new ArrayList<>();
     //ArrayList<String> teamNames = new ArrayList<>();
     String [] teamNames = new String[8];
@@ -19,8 +19,22 @@ public class Tournament {
     public void run() {
 
         //We get user input to check if we want to create a tournament, load one, or delete it
+        String [] datastoragechoice = {"Load and save from file", "Load and save from database"};
+        int datachoice = textUI.select("Please select a way to load and save your tournament" , datastoragechoice,"");
         String[] choices = {"New tournament", "Continue tournament", "Delete tournament"};
         int menuChoice = textUI.select("Choose an option to continue", choices, "");
+
+
+        switch(datachoice){
+
+            case 0:
+                 fileIo = new FileIo();
+                break;
+
+            case 1:
+                 fileIo = new DatabaseIO();
+                break;
+        }
 
         switch (menuChoice) {
 
@@ -253,7 +267,6 @@ public class Tournament {
 
             String teamName1 = tmpData[0];
             String teamName2 = tmpData[2];
-
 
             String date = tmpData[3];
             String time = tmpData[4];
