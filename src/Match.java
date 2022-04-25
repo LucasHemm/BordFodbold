@@ -48,7 +48,6 @@ public class Match {
     //Prints out the teams, the date, the time, and the result
     @Override
     public String toString(){
-
         return "" +  team1.getTeamName() + ", versus, " +  team2.getTeamName() + ", " + date + ", " + time + ", " + result;
     }
 

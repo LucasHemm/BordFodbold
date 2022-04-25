@@ -245,8 +245,9 @@ public class Tournament {
             int points = Integer.parseInt(tmpData[2]);
             int goalDifference = Integer.parseInt(tmpData[3]);
             Team team = new Team(teamName, numberOfPlayer, points, goalDifference);
-            teams.add(team);
 
+            teams.add(team);
+            System.out.println(teams);
             String[] tmpPlayerData = null;
            // for (int j = 0; j < 8; j++) { // foreach line in playerData
                 tmpPlayerData = playerData.get(i).split(", ");
@@ -261,17 +262,64 @@ public class Tournament {
     }
 
     //Used when continuing a tournament to recreate the matches already planned (and played)
-    private void createMatches(ArrayList<String> gameData) {
-        for (int i = 0; i < gameData.size(); i++) {
-            String[] tmpData = gameData.get(i).split(", ");
 
+
+    private void createMatches(ArrayList<String> gameData){
+
+        for(String s: gameData){
+            String[] tmpData = s.split(", ");
             String teamName1 = tmpData[0];
             String teamName2 = tmpData[2];
 
             String date = tmpData[3];
             String time = tmpData[4];
             String result = tmpData[5];
+            Team tmpTeam1 = null;
+            Team tmpTeam2 = null;
 
+
+
+            for (int j = 0; j < 8; ++j) {
+
+
+                System.out.println("FINDES DETTE?!"+teams.get(j).getTeamName());
+
+                if(teamName1.equals(teams.get(j).getTeamName())){
+                    System.out.println("det er lige");
+                } else System.out.println("false");
+
+
+                if (teamName1.equals(teams.get(j).getTeamName())) {
+                    tmpTeam1 = teams.get(j);
+
+                }
+                if (teamName2.equals(teams.get(j).getTeamName())) {
+                    tmpTeam2 = teams.get(j);
+                }
+
+
+            }
+            Match match = new Match(tmpTeam1, tmpTeam2, date, time, result);
+            matches.add(match);
+            System.out.println(tmpTeam1 +" "+ tmpTeam2);//******************************************
+
+
+
+        }
+    }
+
+
+
+        /*
+    private void createMatches(ArrayList<String> gameData) {
+        for (int i = 0; i < gameData.size(); i++) {
+            String[] tmpData = gameData.get(i).split(", ");
+            String teamName1 = tmpData[0];
+            String teamName2 = tmpData[2];
+
+            String date = tmpData[3];
+            String time = tmpData[4];
+            String result = tmpData[5];
             Team tmpTeam1 = null;
             Team tmpTeam2 = null;
             for (int j = 0; j < teams.size(); j++) {
@@ -288,4 +336,7 @@ public class Tournament {
 
         }
     }
+
+         */
+
 }

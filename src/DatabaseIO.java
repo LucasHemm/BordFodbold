@@ -17,7 +17,7 @@ public class DatabaseIO implements IFileIO {
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "*****";
+        String password = "****";
         String[] teamData = new String[8];
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
@@ -29,7 +29,7 @@ public class DatabaseIO implements IFileIO {
             while (result.next()) {
 
                 String teamName = result.getString("name");
-                String numOfPlayers = result.getString("numberOfPlayers");
+                String numOfPlayers = result.getString("numOfPlayers");
                 String points = result.getString("points");
                 String goalDiff = result.getString("goalDiff");
 
@@ -57,14 +57,14 @@ public class DatabaseIO implements IFileIO {
                 PreparedStatement statement1 = connection.prepareStatement("SELECT * FROM sp3.players ORDER BY teamid");
 
                 ResultSet result1 = statement1.executeQuery();
-                String s1 = "";
-                String s2 = "";
-                String s3 = "";
-                String s4 = "";
-                String s5 = "";
-                String s6 = "";
-                String s7 = "";
-                String s8 = "";
+                String p1 = "";
+                String p2 = "";
+                String p3 = "";
+                String p4 = "";
+                String p5 = "";
+                String p6 = "";
+                String p7 = "";
+                String p8 = "";
                 while (result1.next()) {
 
                     String playerName = result1.getString("name");
@@ -74,45 +74,45 @@ public class DatabaseIO implements IFileIO {
 
                        case 1:
 
-                           s1 += playerName + ", ";
+                           p1 += playerName + ", ";
                            break;
                        case 2:
-                           s2 += playerName + ", ";
+                           p2 += playerName + ", ";
 
                            break;
                        case 3:
-                           s3 += playerName + ", ";
+                           p3 += playerName + ", ";
 
                            break;
 
                        case 4:
-                           s4 += playerName + ", ";
+                           p4 += playerName + ", ";
 
                            break;
                        case 5:
-                           s5 += playerName + ", ";
+                           p5 += playerName + ", ";
 
                            break;
                        case 6:
-                           s6 += playerName + ", ";
+                           p6 += playerName + ", ";
 
                            break;
                        case 7:
-                           s7 += playerName + ", ";
+                           p7 += playerName + ", ";
 
                            break;
                        case 8:
-                           s8 += playerName + ", ";
+                           p8 += playerName + ", ";
                            break;
                    }
-                    playerData.add(s1);
-                    playerData.add(s2);
-                    playerData.add(s3);
-                    playerData.add(s4);
-                    playerData.add(s5);
-                    playerData.add(s6);
-                    playerData.add(s7);
-                    playerData.add(s8);
+                    playerData.add(p1);
+                    playerData.add(p2);
+                    playerData.add(p3);
+                    playerData.add(p4);
+                    playerData.add(p5);
+                    playerData.add(p6);
+                    playerData.add(p7);
+                    playerData.add(p8);
                 }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,7 +125,7 @@ public class DatabaseIO implements IFileIO {
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "*****";
+        String password = "****";
         ArrayList<String> gameData = new ArrayList<>();
 
 
@@ -139,13 +139,14 @@ public class DatabaseIO implements IFileIO {
             ResultSet result2 = statement2.executeQuery();
 
 
-            String s1 = "";
-            String s2 = "";
-            String s3 = "";
-            String s4 = "";
-            String s5 = "";
-            String s6 = "";
-            String s7 = "";
+            String s1 = " ";
+            String s2 = " ";
+            String s3 = " ";
+            String s4 = " ";
+            String s5 = " ";
+            String s6 = " ";
+            String s7 = " ";
+
             while (result1.next()) {
                 int id = result1.getInt("id");
 
@@ -153,43 +154,58 @@ public class DatabaseIO implements IFileIO {
                 switch(id){
 
                     case 1:
-                        s1 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2"));
+                        s1 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
+                        ", " + result1.getString("time") + ", " + result1.getString("result");
                         break;
                     case 2:
-                       // s2 +=  + ", ";
-
+                        s2 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
+                                ", " + result1.getString("time") + ", " + result1.getString("result");
                         break;
                     case 3:
-                        s3 +=   ", ";
-
+                        s3 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
+                                ", " + result1.getString("time") + ", " + result1.getString("result");
                         break;
 
                     case 4:
-                        s4 +=   ", ";
-
+                        s4 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
+                                ", " + result1.getString("time") + ", " + result1.getString("result");
                         break;
                     case 5:
-                        s5 +=   ", ";
+
+                            s5 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
+                                    ", " + result1.getString("time") + ", " + result1.getString("result");
+
 
                         break;
                     case 6:
-                        s6 +=   ", ";
-
+                        s6 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
+                                ", " + result1.getString("time") + ", " + result1.getString("result");
                         break;
                     case 7:
-                        s7 +=   ", ";
-
+                        s7 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
+                                ", " + result1.getString("time") + ", " + result1.getString("result");
                         break;
 
                 }
-                gameData.add(s1);
-                gameData.add(s2);
-                gameData.add(s3);
-                gameData.add(s4);
+
+            }
+            gameData.add(s1);
+            gameData.add(s2);
+            gameData.add(s3);
+            gameData.add(s4);
+
+            if(s5.equals(" ") == false){
                 gameData.add(s5);
+
+            }
+            if(s6.equals(" ") == false){
                 gameData.add(s6);
+
+            }
+            if(s7.equals(" ") == false){
                 gameData.add(s7);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -201,7 +217,7 @@ public class DatabaseIO implements IFileIO {
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "*****";
+        String password = "****";
         String s = "";
 
         try {
@@ -213,7 +229,12 @@ public class DatabaseIO implements IFileIO {
             ResultSet result1 = statement1.executeQuery();
 
             while(result1.next()){
+
+
                 s = result1.getString("name");
+                if(s == null){
+                    s= " ";
+                }
             }
 
 
