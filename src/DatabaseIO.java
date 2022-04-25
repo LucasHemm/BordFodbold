@@ -50,7 +50,7 @@ public class DatabaseIO implements IFileIO {
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "*****";
+        String password = "****";
         ArrayList<String> playerData = new ArrayList<>();
         try {
                 connection = DriverManager.getConnection(JdbcUrl, username, password);
@@ -139,13 +139,13 @@ public class DatabaseIO implements IFileIO {
             ResultSet result2 = statement2.executeQuery();
 
 
-            String s1 = " ";
-            String s2 = " ";
-            String s3 = " ";
-            String s4 = " ";
-            String s5 = " ";
-            String s6 = " ";
-            String s7 = " ";
+            String s1 = "";
+            String s2 = "";
+            String s3 = "";
+            String s4 = "";
+            String s5 = "";
+            String s6 = "";
+            String s7 = "";
 
             while (result1.next()) {
                 int id = result1.getInt("id");
@@ -194,15 +194,16 @@ public class DatabaseIO implements IFileIO {
             gameData.add(s3);
             gameData.add(s4);
 
-            if(s5.equals(" ") == false){
+            if(s5.equals("") == false){
+                System.out.println("DO NOT DO THIS");
                 gameData.add(s5);
 
             }
-            if(s6.equals(" ") == false){
+            if(s6.equals("") == false){
                 gameData.add(s6);
 
             }
-            if(s7.equals(" ") == false){
+            if(s7.equals("") == false){
                 gameData.add(s7);
             }
 

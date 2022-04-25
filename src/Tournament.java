@@ -270,34 +270,25 @@ public class Tournament {
             String[] tmpData = s.split(", ");
             String teamName1 = tmpData[0];
             String teamName2 = tmpData[2];
-
+            System.out.println("it works");
             String date = tmpData[3];
             String time = tmpData[4];
             String result = tmpData[5];
             Team tmpTeam1 = null;
             Team tmpTeam2 = null;
 
-
-
-            for (int j = 0; j < 8; ++j) {
-
-
-                System.out.println("FINDES DETTE?!"+teams.get(j).getTeamName());
-
+            for (int j = 0; j < gameData.size()*2; j++) {
+                /*System.out.println("FINDES DETTE?!"+teams.get(j).getTeamName());
                 if(teamName1.equals(teams.get(j).getTeamName())){
                     System.out.println("det er lige");
                 } else System.out.println("false");
-
-
+                */
                 if (teamName1.equals(teams.get(j).getTeamName())) {
                     tmpTeam1 = teams.get(j);
-
                 }
                 if (teamName2.equals(teams.get(j).getTeamName())) {
                     tmpTeam2 = teams.get(j);
                 }
-
-
             }
             Match match = new Match(tmpTeam1, tmpTeam2, date, time, result);
             matches.add(match);
@@ -307,6 +298,7 @@ public class Tournament {
 
         }
     }
+
 
 
 
