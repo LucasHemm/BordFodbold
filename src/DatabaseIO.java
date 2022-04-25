@@ -121,37 +121,107 @@ public class DatabaseIO implements IFileIO {
     }
 
     @Override
-    public ArrayList<String> loadGameData() {
+    public ArrayList<String> loadGameData(){
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "******";
+        String password = "*****";
         ArrayList<String> gameData = new ArrayList<>();
+
+
+
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM sp3.teams ORDER BY id");
+            PreparedStatement statement1 = connection.prepareStatement("SELECT * FROM sp3.matches ORDER BY id");
+            PreparedStatement statement2 = connection.prepareStatement("SELECT * FROM sp3.teams ORDER BY id");
 
-            ResultSet result = statement.executeQuery();
+            ResultSet result1 = statement1.executeQuery();
+            ResultSet result2 = statement2.executeQuery();
 
-            int counter = 0;
-            while (result.next()) {
 
-                String teamName = result.getString("name");
-                String numOfPlayers = result.getString("numberOfPlayers");
-                String points = result.getString("points");
-                String goalDiff = result.getString("goalDiff");
+            String s1 = "";
+            String s2 = "";
+            String s3 = "";
+            String s4 = "";
+            String s5 = "";
+            String s6 = "";
+            String s7 = "";
+            while (result1.next()) {
+                int id = result1.getInt("id");
 
-                String teamBuild = teamName + ", " + numOfPlayers + ", " + points + ", " + goalDiff;
 
-                teamData[counter] = teamBuild;
+                switch(id){
 
-                counter++;
+                    case 1:
+                        s1 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2"));
+                        break;
+                    case 2:
+                       // s2 +=  + ", ";
+
+                        break;
+                    case 3:
+                        s3 +=   ", ";
+
+                        break;
+
+                    case 4:
+                        s4 +=   ", ";
+
+                        break;
+                    case 5:
+                        s5 +=   ", ";
+
+                        break;
+                    case 6:
+                        s6 +=   ", ";
+
+                        break;
+                    case 7:
+                        s7 +=   ", ";
+
+                        break;
+
+                }
+                gameData.add(s1);
+                gameData.add(s2);
+                gameData.add(s3);
+                gameData.add(s4);
+                gameData.add(s5);
+                gameData.add(s6);
+                gameData.add(s7);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return gameData;
 
+    }
+
+    private String getNameFromID(int index){
+        Connection connection = null;
+        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
+        String username = "root";
+        String password = "*****";
+        String s = "";
+
+        try {
+            connection = DriverManager.getConnection(JdbcUrl, username, password);
+            PreparedStatement statement1 = connection.prepareStatement("SELECT name FROM sp3.teams where id = ? ORDER BY id");
+
+
+            statement1.setInt(1,index);
+            ResultSet result1 = statement1.executeQuery();
+
+            while(result1.next()){
+                s = result1.getString("name");
+            }
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return s;
     }
 
 
