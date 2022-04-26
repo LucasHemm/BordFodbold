@@ -7,11 +7,6 @@ import java.util.Scanner;
 public class DatabaseIO implements IFileIO {
 
 
-    @Override
-    public void saveGameData(ArrayList<Match> data) {
-
-
-    }
 
     @Override
     public String[] loadTeamData() {
@@ -51,7 +46,7 @@ public class DatabaseIO implements IFileIO {
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "****";
+        String password = "***";
         ArrayList<String> playerData = new ArrayList<>();
         try {
                 connection = DriverManager.getConnection(JdbcUrl, username, password);
@@ -141,7 +136,7 @@ public class DatabaseIO implements IFileIO {
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "*****";
+        String password = "****";
         ArrayList<String> gameData = new ArrayList<>();
 
 
@@ -234,13 +229,12 @@ public class DatabaseIO implements IFileIO {
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "****";
+        String password = "*****";
         String s = "";
 
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
             PreparedStatement statement1 = connection.prepareStatement("SELECT name FROM sp3.teams where id = ? ORDER BY id");
-
 
             statement1.setInt(1,index);
             ResultSet result1 = statement1.executeQuery();
@@ -261,8 +255,31 @@ public class DatabaseIO implements IFileIO {
 
         return s;
     }
+    private int getIDFromName(String name){
+        Connection connection = null;
+        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
+        String username = "root";
+        String password = "*****";
+        int ID = 0;
+
+        try {
+            connection = DriverManager.getConnection(JdbcUrl, username, password);
+            PreparedStatement statement1 = connection.prepareStatement("SELECT id FROM sp3.teams where name = ? ORDER BY id");
+
+            statement1.setString(1,name);
+            ResultSet result1 = statement1.executeQuery();
+
+            while(result1.next()){
+                ID = result1.getInt("id");
+            }
 
 
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return ID;
+    }
 
     @Override
     public void saveTeamData(ArrayList<Team> data) {
@@ -289,27 +306,76 @@ public class DatabaseIO implements IFileIO {
             }
 
 
-            //INSERT INTO table1 (field1, field2, ...) VALUES (value1, value2, ...)
-
         } catch(SQLException e){
             e.printStackTrace();
         }
 
     }
+    @Override
+    public void saveGameData(ArrayList<Match> data) {
+        Connection connection = null;
+        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
+        String username = "root";
+        String password = "*****";
+        try {
+            connection = DriverManager.getConnection(JdbcUrl, username, password);
+            PreparedStatement statement1 = null;
+
+            for(Match m : data) {
+                statement1 = connection.prepareStatement("INSERT INTO sp3.matches (team1,team2, date, time, result) VALUES(?,?,?,?,?)");
+
+
+                statement1.setInt(1, getIDFromName(m.getTeam1().getTeamName()));
+                statement1.setInt(2, getIDFromName(m.getTeam2().getTeamName()));
+                statement1.setString(3, m.getDate());
+                statement1.setString(4, m.getTime());
+                statement1.setString(5, m.getResult());
+
+
+                int result1 = statement1.executeUpdate();
+            }
+
+
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void savePlayerData(ArrayList<Team> teams) {
+        Connection connection = null;
+        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
+        String username = "root";
+        String password = "****";
+        int ID = 0;
 
+        try {
+            connection = DriverManager.getConnection(JdbcUrl, username, password);
+            PreparedStatement statement1 = connection.prepareStatement("INSERT INTO sp3.players (name, teamid) VALUES(?,?)");
+            int counter = 1;
+            for(Team t : teams){
+
+                for(int i=0; i<t.getNumberOfPlayers();i++)
+                {
+                    statement1.setString(1,t.getTeamPlayers(i).getName());
+                    statement1.setInt(2,counter);
+                    int result1 = statement1.executeUpdate();
+                }
+                counter++;
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
     }
-
-
 
     @Override
     public void clear() {
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "****";
+        String password = "*****";
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
             PreparedStatement statement1 = connection.prepareStatement("set foreign_key_checks = 0;");

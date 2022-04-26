@@ -81,6 +81,12 @@ public class Team {
         return names;
     }
 
+    public Player getTeamPlayers(int i){
+
+        return teamPlayers.get(i);
+
+    }
+
 
     //Prints out the team's name, points, and goal difference
     @Override

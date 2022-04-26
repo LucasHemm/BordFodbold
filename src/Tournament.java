@@ -174,8 +174,8 @@ public class Tournament {
     //It adds the two teams in the ArrayList, teams
     private void createMatch(String date, String time) {
         Match match = new Match(date, time);
-        teams.add(match.team1);
-        teams.add(match.team2);
+        teams.add(match.getTeam1());
+        teams.add(match.getTeam2());
 
         matches.add(match);
     }
@@ -212,27 +212,27 @@ public class Tournament {
 
     //Gets user input to choose a match and then the admin can register the result for said match
     private void registerResult(Match match) {
-        String[] choices = {match.team1.getTeamName(), match.team2.getTeamName()};
+        String[] choices = {match.getTeam1().getTeamName(), match.getTeam2().getTeamName()};
         int winner = textUI.select("Enter winning team", choices, "");
         switch (winner) {
             case 0:
-                match.team1.updateNumberOfPoints(2);
-                match.result = match.team1.getTeamName() + ": Won the match";
+                match.getTeam1().updateNumberOfPoints(2);
+                match.setResult(match.getTeam1().getTeamName() + ": Won the match");
                 break;
             case 1:
-                match.team2.updateNumberOfPoints(2);
-                match.result = match.team2.getTeamName() + ": Won the match";
+                match.getTeam2().updateNumberOfPoints(2);
+                match.setResult(match.getTeam2().getTeamName() + ": Won the match");
                 break;
         }
-        System.out.println("Enter number of goals scored by " + match.team1.getTeamName());
+        System.out.println("Enter number of goals scored by " + match.getTeam1().getTeamName());
         int team1Goal = textUI.getInteger();
-        System.out.println("Enter number of goals scored by " + match.team2.getTeamName());
+        System.out.println("Enter number of goals scored by " + match.getTeam2().getTeamName());
         int team2Goal = textUI.getInteger();
-        match.team1.updateGoalDifference(team1Goal);
-        match.team1.updateGoalDifference(-team2Goal);
+        match.getTeam1().updateGoalDifference(team1Goal);
+        match.getTeam1().updateGoalDifference(-team2Goal);
 
-        match.team2.updateGoalDifference(team2Goal);
-        match.team2.updateGoalDifference(-team1Goal);
+        match.getTeam2().updateGoalDifference(team2Goal);
+        match.getTeam2().updateGoalDifference(-team1Goal);
         System.out.println("Result has been registered");
     }
 

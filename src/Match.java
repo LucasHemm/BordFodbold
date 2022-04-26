@@ -4,12 +4,12 @@ import textui.TextUI;
 public class Match {
 
     //Fields
-    String date;
-    String time;
+    private String date;
+    private  String time;
     TextUI textUI = new SysTextUI();
-    String result = "TBC";
-    Team team1;
-    Team team2;
+    private String result = "TBC";
+    private Team team1;
+    private Team team2;
 
 
     //Constructor used when creating a new tournament
@@ -51,4 +51,43 @@ public class Match {
         return "" +  team1.getTeamName() + ", versus, " +  team2.getTeamName() + ", " + date + ", " + time + ", " + result;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public Team getTeam1() {
+        return team1;
+    }
+
+    public Team getTeam2() {
+        return team2;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public void setTeam1(Team team1) {
+        this.team1 = team1;
+    }
+
+    public void setTeam2(Team team2) {
+        this.team2 = team2;
+    }
 }
