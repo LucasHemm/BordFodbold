@@ -6,14 +6,13 @@ import java.util.Scanner;
 
 public class DatabaseIO implements IFileIO {
 
-
+    private String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
+    private String username = "root";
+    private String password = "*****";
+    private Connection connection = null;
 
     @Override
     public String[] loadTeamData() {
-        Connection connection = null;
-        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
-        String username = "root";
-        String password = "****";
         String[] teamData = new String[8];
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
@@ -43,10 +42,6 @@ public class DatabaseIO implements IFileIO {
 
     @Override
     public ArrayList<String> loadPlayerData() {
-        Connection connection = null;
-        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
-        String username = "root";
-        String password = "***";
         ArrayList<String> playerData = new ArrayList<>();
         try {
                 connection = DriverManager.getConnection(JdbcUrl, username, password);
@@ -69,8 +64,6 @@ public class DatabaseIO implements IFileIO {
                    switch(teamid){
                        case 1:
                             playerName = result1.getString("name");
-                           System.out.println(playerName);
-
                            p1 += playerName + ", ";
                            break;
                        case 2:
@@ -133,13 +126,7 @@ public class DatabaseIO implements IFileIO {
 
     @Override
     public ArrayList<String> loadGameData(){
-        Connection connection = null;
-        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
-        String username = "root";
-        String password = "****";
         ArrayList<String> gameData = new ArrayList<>();
-
-
 
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
@@ -226,12 +213,7 @@ public class DatabaseIO implements IFileIO {
     }
 
     private String getNameFromID(int index){
-        Connection connection = null;
-        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
-        String username = "root";
-        String password = "*****";
         String s = "";
-
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
             PreparedStatement statement1 = connection.prepareStatement("SELECT name FROM sp3.teams where id = ? ORDER BY id");
@@ -256,10 +238,6 @@ public class DatabaseIO implements IFileIO {
         return s;
     }
     private int getIDFromName(String name){
-        Connection connection = null;
-        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
-        String username = "root";
-        String password = "*****";
         int ID = 0;
 
         try {
@@ -283,11 +261,6 @@ public class DatabaseIO implements IFileIO {
 
     @Override
     public void saveTeamData(ArrayList<Team> data) {
-        Connection connection = null;
-        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
-        String username = "root";
-        String password = "****";
-
 
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
@@ -313,10 +286,7 @@ public class DatabaseIO implements IFileIO {
     }
     @Override
     public void saveGameData(ArrayList<Match> data) {
-        Connection connection = null;
-        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
-        String username = "root";
-        String password = "*****";
+
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
             PreparedStatement statement1 = null;
@@ -344,10 +314,6 @@ public class DatabaseIO implements IFileIO {
 
     @Override
     public void savePlayerData(ArrayList<Team> teams) {
-        Connection connection = null;
-        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
-        String username = "root";
-        String password = "****";
         int ID = 0;
 
         try {
@@ -372,10 +338,7 @@ public class DatabaseIO implements IFileIO {
 
     @Override
     public void clear() {
-        Connection connection = null;
-        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
-        String username = "root";
-        String password = "*****";
+
         try {
             connection = DriverManager.getConnection(JdbcUrl, username, password);
             PreparedStatement statement1 = connection.prepareStatement("set foreign_key_checks = 0;");

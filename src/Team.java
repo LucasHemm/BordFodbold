@@ -94,4 +94,7 @@ public class Team {
         return "" + this.teamName + ", " + this.getNumberOfPoints()+ ", " + this.getGoalDifference();
     }
 
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        this.numberOfPlayers = numberOfPlayers;
+    }
 }

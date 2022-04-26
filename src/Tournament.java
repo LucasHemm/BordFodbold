@@ -4,6 +4,7 @@ import textui.TextUI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 public class Tournament {
 
@@ -76,7 +77,7 @@ public class Tournament {
         //Loop in which we call for a user input to do the actions: register result, view ranking, etc.
         while (check) {
             String[] options = {"Register results", "Create semi-finals", "Create final", "View ranking",
-                    "View match program", "View teams", "Quit and save"};
+                    "View match program", "View teams","Search team","Search player","Add player","Remove player", "Quit and save"};
             int optionChoice = textUI.select("Choose an option", options, "");
 
             switch (optionChoice) {
@@ -153,7 +154,20 @@ public class Tournament {
 
                 //This case clear the exiting files, as to not save on top of old data
                 //Then it saves all the data in the files and ends the program
+
                 case 6:
+                    searchTeam();
+                    break;
+                case 7:
+                    searchPlayer();
+                    break;
+                case 8:
+                    addPlayer();
+                    break;
+                case 9:
+                    removePlayer();
+                    break;
+                case 10:
                     fileIo.clear();
                     fileIo.saveTeamData(teams);
                     fileIo.saveGameData(matches);
@@ -236,38 +250,6 @@ public class Tournament {
         System.out.println("Result has been registered");
     }
 
-    //Used when continuing a tournament to recreate teams and the players for each team
-    /*private void createTeams(String[] teamData, ArrayList<String> playerData) {
-        for (String s : teamData) { // foreach team
-            int counter = 0;
-            String[] tmpData = s.split(", ");
-            String teamName = tmpData[0];
-            int numberOfPlayer = Integer.parseInt(tmpData[1]);
-            int points = Integer.parseInt(tmpData[2]);
-            int goalDifference = Integer.parseInt(tmpData[3]);
-            Team team = new Team(teamName, numberOfPlayer, points, goalDifference);
-
-            teams.add(team);
-            String[] tmpPlayerData = null;
-            // foreach line in playerData
-
-
-            for(int i = 0; i<8;i++){
-                tmpPlayerData = playerData.get(i).split(", ");
-            }
-
-                tmpPlayerData = playerData.get(0).split(", ");
-            counter++;
-                //}
-                for (int k = 0; k < tmpPlayerData.length; k++) {
-                    String playerName = tmpPlayerData[k];
-                    team.createPlayer(playerName);
-
-
-
-            }
-        }
-    }*/
 
     private void createTeams(String[] teamData, ArrayList<String> playerData) {
         for (int i = 0; i < teamData.length; i++) { // foreach team
@@ -293,53 +275,20 @@ public class Tournament {
         }
     }
 
-        //Used when continuing a tournament to recreate the matches already planned (and played)
+    //Used when continuing a tournament to recreate the matches already planned (and played)
+    private void createMatches (ArrayList < String > gameData) {
 
-
-        private void createMatches (ArrayList < String > gameData) {
-
-            for (String s : gameData) {
-                String[] tmpData = s.split(", ");
-                String teamName1 = tmpData[0];
-                String teamName2 = tmpData[2];
-                String date = tmpData[3];
-                String time = tmpData[4];
-                String result = tmpData[5];
-                Team tmpTeam1 = null;
-                Team tmpTeam2 = null;
-
-                for (int j = 0; j < teams.size(); j++) {
-                    if (teamName1.equals(teams.get(j).getTeamName())) {
-                        tmpTeam1 = teams.get(j);
-                    }
-                    if (teamName2.equals(teams.get(j).getTeamName())) {
-                        tmpTeam2 = teams.get(j);
-                    }
-                }
-                Match match = new Match(tmpTeam1, tmpTeam2, date, time, result);
-                matches.add(match);
-
-
-            }
-        }
-
-
-
-
-        /*
-    private void createMatches(ArrayList<String> gameData) {
-        for (int i = 0; i < gameData.size(); i++) {
-            String[] tmpData = gameData.get(i).split(", ");
+        for (String s : gameData) {
+            String[] tmpData = s.split(", ");
             String teamName1 = tmpData[0];
             String teamName2 = tmpData[2];
-
             String date = tmpData[3];
             String time = tmpData[4];
             String result = tmpData[5];
             Team tmpTeam1 = null;
             Team tmpTeam2 = null;
-            for (int j = 0; j < teams.size(); j++) {
 
+            for (int j = 0; j < teams.size(); j++) {
                 if (teamName1.equals(teams.get(j).getTeamName())) {
                     tmpTeam1 = teams.get(j);
                 }
@@ -350,10 +299,86 @@ public class Tournament {
             Match match = new Match(tmpTeam1, tmpTeam2, date, time, result);
             matches.add(match);
 
+
         }
     }
+        private void searchTeam(){
+        System.out.println("Please enter search for team");
+        String s = textUI.get();
+            textUI.clear();
+        for(String n: teamNames){
+            if(n.toLowerCase().contains(s.toLowerCase())){
+                System.out.println("You searched for: " + n);
+            }
+        }
+        System.out.println("Press Enter to continue");
+        textUI.get();
+        }
 
-         */
+        private void searchPlayer(){
+        ArrayList<String> allPlayerNames = new ArrayList<>();
+
+        for(Team  t : teams){
+            String[] arrayOfNames = t.getTeamPlayerNames().split(", ");
+            for(int i = 0; i < t.getNumberOfPlayers();i++) {
+                String name = arrayOfNames[i];
+                name += ", who plays for " + t.getTeamName();
+
+                allPlayerNames.add(name);
+            }
+        }
+            System.out.println("Please enter search for player");
+            String s = textUI.get();
+            textUI.clear();
+            for(String n: allPlayerNames){
+                if(n.toLowerCase().contains(s.toLowerCase())){
+                    System.out.println("You searched for: " + n);
+                }
+            }
+            System.out.println("Press Enter to continue");
+            textUI.get();
+
+        }
+
+        private void addPlayer(){
+            int teamChoice = textUI.select("Enter team you wish to add a player to",teamNames,"");
+            int numOfPlayers = teams.get(teamChoice).getNumberOfPlayers();
+            if(numOfPlayers >= 5){
+                textUI.print("The team is full!");
+                textUI.print("Press enter to continue");
+                textUI.get();
+             } else {
+                textUI.print("Please Enter name of player you wish to add");
+                String nameOfPlayer = textUI.get();
+                Player player = new Player(nameOfPlayer);
+                teams.get(teamChoice).teamPlayers.add(player);
+                teams.get(teamChoice).setNumberOfPlayers(numOfPlayers+=1);
+            }
+
+        }
+
+        private void removePlayer(){
+            int teamChoice = textUI.select("Enter team you wish to remove a player from",teamNames,"");
+            int numOfPlayers = teams.get(teamChoice).getNumberOfPlayers();
+            if(numOfPlayers <= 2){
+                textUI.print("The teams needs at least 2 players");
+                textUI.print("Press enter to continue");
+                textUI.get();
+            } else {
+                ArrayList<String> playerNamesFromTeam = new ArrayList<>();
+
+                for(Player p: teams.get(teamChoice).teamPlayers) {
+
+                    playerNamesFromTeam.add(p.getName());
+                }
+
+                int playerToRemove = textUI.select("Choose player to remove from team",playerNamesFromTeam,"");
+
+
+                teams.get(teamChoice).teamPlayers.remove(playerToRemove);
+                teams.get(teamChoice).setNumberOfPlayers(numOfPlayers-=1);
+            }
+        }
 
 
 }

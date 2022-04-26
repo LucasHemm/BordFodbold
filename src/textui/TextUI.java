@@ -5,6 +5,9 @@
  */
 package textui;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  *
  * @author Tobias
@@ -53,7 +56,7 @@ public interface TextUI
         }
     }
     
-    default public int select(String header, Iterable<String> choices, String footer)
+    default public int select(String header, ArrayList<String> choices, String footer)
     {
         println(header);
         int count = 0;
