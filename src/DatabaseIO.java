@@ -10,6 +10,7 @@ public class DatabaseIO implements IFileIO {
     @Override
     public void saveGameData(ArrayList<Match> data) {
 
+
     }
 
     @Override
@@ -67,53 +68,68 @@ public class DatabaseIO implements IFileIO {
                 String p8 = "";
                 while (result1.next()) {
 
-                    String playerName = result1.getString("name");
+
                     int teamid = result1.getInt("teamid");
-
+                     String playerName = "";
                    switch(teamid){
-
                        case 1:
+                            playerName = result1.getString("name");
+                           System.out.println(playerName);
 
                            p1 += playerName + ", ";
                            break;
                        case 2:
+                           playerName = result1.getString("name");
                            p2 += playerName + ", ";
 
                            break;
                        case 3:
+                           playerName = result1.getString("name");
+
                            p3 += playerName + ", ";
 
                            break;
 
                        case 4:
+                           playerName = result1.getString("name");
+
                            p4 += playerName + ", ";
 
                            break;
                        case 5:
+                           playerName = result1.getString("name");
+
                            p5 += playerName + ", ";
 
                            break;
                        case 6:
+                           playerName = result1.getString("name");
+
                            p6 += playerName + ", ";
 
                            break;
                        case 7:
+                           playerName = result1.getString("name");
+
                            p7 += playerName + ", ";
 
                            break;
                        case 8:
+                           playerName = result1.getString("name");
+
                            p8 += playerName + ", ";
                            break;
                    }
-                    playerData.add(p1);
-                    playerData.add(p2);
-                    playerData.add(p3);
-                    playerData.add(p4);
-                    playerData.add(p5);
-                    playerData.add(p6);
-                    playerData.add(p7);
-                    playerData.add(p8);
+
                 }
+            playerData.add(p1);
+            playerData.add(p2);
+            playerData.add(p3);
+            playerData.add(p4);
+            playerData.add(p5);
+            playerData.add(p6);
+            playerData.add(p7);
+            playerData.add(p8);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -125,7 +141,7 @@ public class DatabaseIO implements IFileIO {
         Connection connection = null;
         String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
         String username = "root";
-        String password = "****";
+        String password = "*****";
         ArrayList<String> gameData = new ArrayList<>();
 
 
@@ -250,6 +266,34 @@ public class DatabaseIO implements IFileIO {
 
     @Override
     public void saveTeamData(ArrayList<Team> data) {
+        Connection connection = null;
+        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
+        String username = "root";
+        String password = "****";
+
+
+        try {
+            connection = DriverManager.getConnection(JdbcUrl, username, password);
+            PreparedStatement statement1 = null;
+
+            for(Team t : data) {
+                statement1 = connection.prepareStatement("INSERT INTO sp3.teams (name,numOfPlayers, points, goalDiff) VALUES(?,?,?,?)");
+
+
+                statement1.setString(1,t.getTeamName());
+                statement1.setInt(2,t.getNumberOfPlayers());
+                statement1.setInt(3, t.getNumberOfPoints());
+                statement1.setInt(4, t.getGoalDifference());
+
+                int result1 = statement1.executeUpdate();
+            }
+
+
+            //INSERT INTO table1 (field1, field2, ...) VALUES (value1, value2, ...)
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -262,6 +306,27 @@ public class DatabaseIO implements IFileIO {
 
     @Override
     public void clear() {
+        Connection connection = null;
+        String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
+        String username = "root";
+        String password = "****";
+        try {
+            connection = DriverManager.getConnection(JdbcUrl, username, password);
+            PreparedStatement statement1 = connection.prepareStatement("set foreign_key_checks = 0;");
+            PreparedStatement statement2 = connection.prepareStatement("TRUNCATE sp3.teams;");
+            PreparedStatement statement3 = connection.prepareStatement("TRUNCATE sp3.players;");
+            PreparedStatement statement4 = connection.prepareStatement("TRUNCATE sp3.matches;");
+            PreparedStatement statement5 = connection.prepareStatement("set foreign_key_checks = 1;");
+
+            int result1 = statement1.executeUpdate();
+            int result2 = statement2.executeUpdate();
+            int result3 = statement3.executeUpdate();
+            int result4 = statement4.executeUpdate();
+            int result5 = statement5.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
 
     }
 
