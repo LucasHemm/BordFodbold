@@ -160,49 +160,5 @@ public class FileIo implements IFileIO{
         catch (IOException e) {
             e.getStackTrace();
         }
-
-
     }
-
-    //Adds a filler header in all the files
-    public void fill(){
-
-        String gameData = "This is a filler";
-        try {
-            FileWriter output = new FileWriter("src/playerData.csv");
-            output.write(gameData);
-            output.close();
-
-        }
-        catch (IOException e) {
-            e.getStackTrace();
-        }
-        try {
-            FileWriter output = new FileWriter("src/teamData.csv");
-            output.write(gameData);
-            output.close();
-
-        }
-        catch (IOException e) {
-            e.getStackTrace();
-        }
-        try {
-            FileWriter output = new FileWriter("src/gameData.csv");
-            output.write(gameData);
-            output.close();
-
-        }
-        catch (IOException e) {
-            e.getStackTrace();
-        }
-
-
-
-    }
-
-
-
-
-
-
 }

@@ -6,11 +6,14 @@ import java.util.Scanner;
 
 public class DatabaseIO implements IFileIO {
 
+    //Fields with log-on information
     private String JdbcUrl = "jdbc:mysql://localhost/world?" + "autoReconnect=true&useSSL=false";
     private String username = "root";
-    private String password = "*****";
+    private String password = "*****"; //Remember to change password**********************
     private Connection connection = null;
 
+
+    //Gets the data for teams from database and returns a String array with the 8 teams
     @Override
     public String[] loadTeamData() {
         String[] teamData = new String[8];
@@ -40,6 +43,7 @@ public class DatabaseIO implements IFileIO {
         return teamData;
     }
 
+    //Gets the data for players from database and returns an ArrayList with the players for the 8 teams
     @Override
     public ArrayList<String> loadPlayerData() {
         ArrayList<String> playerData = new ArrayList<>();
@@ -124,6 +128,7 @@ public class DatabaseIO implements IFileIO {
         return playerData;
     }
 
+    //Gets the data for matches from database and returns an Arraylist
     @Override
     public ArrayList<String> loadGameData(){
         ArrayList<String> gameData = new ArrayList<>();
@@ -155,10 +160,12 @@ public class DatabaseIO implements IFileIO {
                         s1 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
                         ", " + result1.getString("time") + ", " + result1.getString("result");
                         break;
+
                     case 2:
                         s2 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
                                 ", " + result1.getString("time") + ", " + result1.getString("result");
                         break;
+
                     case 3:
                         s3 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
                                 ", " + result1.getString("time") + ", " + result1.getString("result");
@@ -167,18 +174,18 @@ public class DatabaseIO implements IFileIO {
                     case 4:
                         s4 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
                                 ", " + result1.getString("time") + ", " + result1.getString("result");
-                        break;
-                    case 5:
 
+
+                    case 5:
                             s5 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
                                     ", " + result1.getString("time") + ", " + result1.getString("result");
-
-
                         break;
+
                     case 6:
                         s6 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
                                 ", " + result1.getString("time") + ", " + result1.getString("result");
                         break;
+
                     case 7:
                         s7 += getNameFromID(result1.getInt("team1")) + ", " + "versus" + ", " + getNameFromID(result1.getInt("team2")) + ", " + result1.getString("date") +
                                 ", " + result1.getString("time") + ", " + result1.getString("result");
@@ -211,7 +218,7 @@ public class DatabaseIO implements IFileIO {
         return gameData;
 
     }
-
+    //Helper method tht gets name of a team from their team-ID in the database
     private String getNameFromID(int index){
         String s = "";
         try {
@@ -237,6 +244,8 @@ public class DatabaseIO implements IFileIO {
 
         return s;
     }
+
+    //Helper method that gets the team ID from the team name, so it can be used for matches
     private int getIDFromName(String name){
         int ID = 0;
 
@@ -251,7 +260,6 @@ public class DatabaseIO implements IFileIO {
                 ID = result1.getInt("id");
             }
 
-
         } catch(SQLException e){
             e.printStackTrace();
         }
@@ -259,6 +267,7 @@ public class DatabaseIO implements IFileIO {
         return ID;
     }
 
+    //Takes an ArrayList of teams and saves their values in the database
     @Override
     public void saveTeamData(ArrayList<Team> data) {
 
@@ -282,8 +291,9 @@ public class DatabaseIO implements IFileIO {
         } catch(SQLException e){
             e.printStackTrace();
         }
-
     }
+
+    //Takes an ArrayList of matches and saves their values in the database
     @Override
     public void saveGameData(ArrayList<Match> data) {
 
@@ -312,6 +322,7 @@ public class DatabaseIO implements IFileIO {
         }
     }
 
+    //Takes an ArrayList of teams and saves the players names for each team in the database
     @Override
     public void savePlayerData(ArrayList<Team> teams) {
         int ID = 0;
@@ -336,6 +347,7 @@ public class DatabaseIO implements IFileIO {
         }
     }
 
+    //Removes data from the database
     @Override
     public void clear() {
 
@@ -356,11 +368,5 @@ public class DatabaseIO implements IFileIO {
         } catch(SQLException e){
             e.printStackTrace();
         }
-
-    }
-
-    @Override
-    public void fill() {
-
     }
 }

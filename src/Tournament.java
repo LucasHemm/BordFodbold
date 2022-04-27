@@ -13,10 +13,9 @@ public class Tournament {
     public ArrayList<Match> matches = new ArrayList();
     IFileIO fileIo;
     ArrayList<Team> teams = new ArrayList<>();
-    //ArrayList<String> teamNames = new ArrayList<>();
     String[] teamNames = new String[8];
 
-    //Method that runs the whole tournamentt
+    //Method that runs the whole tournament
     public void run() {
 
         //We get user input to check if we want to create a tournament, load one, or delete it
@@ -152,21 +151,28 @@ public class Tournament {
                     textUI.clear();
                     break;
 
-                //This case clear the exiting files, as to not save on top of old data
-                //Then it saves all the data in the files and ends the program
-
+                //Allows the user to search for a team
                 case 6:
                     searchTeam();
                     break;
+
+                //Allows the user to search for an existing player
                 case 7:
                     searchPlayer();
                     break;
+
+                //Allows the user to add a player to a team
                 case 8:
                     addPlayer();
                     break;
+
+                //Allows the user to remove an existing player
                 case 9:
                     removePlayer();
                     break;
+
+                //This case clear the exiting files, as to not save on top of old data
+                //Then it saves all the data in the files and ends the program
                 case 10:
                     fileIo.clear();
                     fileIo.saveTeamData(teams);
@@ -250,7 +256,7 @@ public class Tournament {
         System.out.println("Result has been registered");
     }
 
-
+    //Used when reloading data to re-create the Team objects
     private void createTeams(String[] teamData, ArrayList<String> playerData) {
         for (int i = 0; i < teamData.length; i++) { // foreach team
             String[] tmpData = teamData[i].split(", ");
@@ -302,6 +308,8 @@ public class Tournament {
 
         }
     }
+
+        //Helper method that allows to find teams from parts of their name
         private void searchTeam(){
         System.out.println("Please enter search for team");
         String s = textUI.get();
@@ -315,6 +323,7 @@ public class Tournament {
         textUI.get();
         }
 
+        //Helper method that allows to find players, and what team they play fo,r from parts of their name
         private void searchPlayer(){
         ArrayList<String> allPlayerNames = new ArrayList<>();
 
@@ -340,6 +349,7 @@ public class Tournament {
 
         }
 
+        //Creates a new player and adds him to an existing team
         private void addPlayer(){
             int teamChoice = textUI.select("Enter team you wish to add a player to",teamNames,"");
             int numOfPlayers = teams.get(teamChoice).getNumberOfPlayers();
@@ -357,6 +367,7 @@ public class Tournament {
 
         }
 
+        //Removes a player from a team
         private void removePlayer(){
             int teamChoice = textUI.select("Enter team you wish to remove a player from",teamNames,"");
             int numOfPlayers = teams.get(teamChoice).getNumberOfPlayers();
@@ -379,6 +390,4 @@ public class Tournament {
                 teams.get(teamChoice).setNumberOfPlayers(numOfPlayers-=1);
             }
         }
-
-
 }
